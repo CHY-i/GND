@@ -15,15 +15,15 @@ if k> k' , where k' is the number of logical qubits, will remove stabilizers ran
 
 ### MADE
 ```python
-python training.py -save True -n_type 'made' -c_type 'sur' -d 3 -k 1 -seed 0 -er 0.189 -device 'cuda:0' -batch 10000 -epoch 50000 -depth 3 -width 20
+python training.py -save True -n_type 'made' -c_type 'sur' -n 13 -d 3 -k 1 -seed 0 -er 0.189 -device 'cuda:0' -batch 10000 -epoch 50000 -depth 3 -width 20
 ```
 ### TraDE
 ```python
-python training.py -save True -n_type 'trade' -c_type 'sur' -d 3 -k 1 -seed 0 -er 0.189 -device 'cuda:0' -batch 10000 -epoch 50000 -d_model 128 -n_heads 4 -d_ff 512 -n_layers 2 
+python training.py -save True -n_type 'trade' -c_type 'sur' -n 13 -d 3 -k 1 -seed 0 -er 0.189 -device 'cuda:0' -batch 10000 -epoch 50000 -d_model 128 -n_heads 4 -d_ff 512 -n_layers 2 
 ```
 
 ```python
-python Block_training.py -save True -n_type 'trade' -c_type 'qcc' -n 90 -k 8 -seed 0 -er 0.13 -device 'cuda:1' -batch 10000 -epoch 500000 -d_model 256 -n_heads 4 -d_ff 256 -n_layers 3 -dtype 'float32'
+python Block_training.py -save True -n_type 'trade' -c_type 'qcc' -n 90 -d 10 -k 8 -seed 0 -er 0.13 -device 'cuda:1' -batch 10000 -epoch 500000 -d_model 256 -n_heads 4 -d_ff 256 -n_layers 3 -dtype 'float32'
 ```
 ## Correction
 
@@ -31,6 +31,6 @@ python Block_training.py -save True -n_type 'trade' -c_type 'qcc' -n 90 -k 8 -se
 
 ### depolarized
 ```python
-python forward_decoding.py -save True -c_type 'sur' -d 3 -k 1 -seed 0  -device 'cuda:0' -n_type 'trade' -e_model 'dep' -trials 10000 -er 0.189
+python forward_decoding.py -save True -c_type 'sur' -n 13 -d 3 -k 1 -seed 0  -device 'cuda:0' -n_type 'trade' -e_model 'dep' -trials 10000 -er 0.189
 ```
 

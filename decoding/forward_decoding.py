@@ -50,7 +50,7 @@ print(error_rate)
 #  0.11943215, 0.13400508,0.15035617, 0.1687024,  0.1892872,  0.21238373,
 #  0.23829847, 0.26737528, 0.3])
 '''Loading Code'''
-info = read_code(d, k, seed, c_type=c_type, n=n)
+info = read_code(d, k, n=n, seed=seed, c_type=c_type)
 Code = Loading_code(info)
 
 '''Loading Net'''

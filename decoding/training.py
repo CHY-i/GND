@@ -46,7 +46,7 @@ if __name__ == '__main__':
         g = oCode.g_stabilizer[defect_g,:]
         Code = Abstractcode(g_stabilizer=g)
     else:    
-        info = read_code(d=d, k=k, seed=seed, c_type=c_type, n=n)
+        info = read_code(d=d, k=k, n=n, seed=seed, c_type=c_type)
         Code = Loading_code(info)
     
     e1 = Code.pure_es 
@@ -134,13 +134,7 @@ if __name__ == '__main__':
     # print(lo_his)
     # torch.save((loss_his, lo_his), abspath(dirname(__file__))+'/his.pt')
     if save == True:
-        if c_type == 'qcc':
-            path = abspath(dirname(__file__))+'/net/code_capacity/'+n_type+'_'+c_type+'_n{}_k{}_er{}.pt'.format(n, k, er)
-        
-        elif c_type == 'qcc':
-            path = abspath(dirname(__file__))+'/net/code_capacity/'+n_type+'_'+c_type+'_n{}_d{}_k{}_seed{}_er{}_{}.pt'.format(n, d, k, seed, er, e_model)
-        else:
-            path = abspath(dirname(__file__))+'/net/code_capacity/'+n_type+'_'+c_type+'_d{}_k{}_seed{}_er{}_{}.pt'.format(d, k, seed, er, e_model)
+        path = abspath(dirname(__file__))+'/net/code_capacity/'+n_type+'_'+c_type+'_n{}_d{}_k{}_seed{}_er{}_{}.pt'.format(n, d, k, seed, er, e_model)
 
         if exists(path):
             None
