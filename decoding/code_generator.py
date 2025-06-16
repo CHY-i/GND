@@ -5,7 +5,7 @@ import random
 import sys
 from os.path import abspath, dirname, exists
 sys.path.append(abspath(dirname(__file__)).strip('decoding'))
-from module import Surfacecode, Abstractcode, Toric, Rotated_Surfacecode, Sur_3D, QuasiCyclicCode
+from module import Surfacecode, Abstractcode, Toric, Rotated_Surfacecode, Sur_3D, QuasiCyclicCode, Repetition_code
 from module import mod2, read_code, Loading_code
 mod2 = mod2()#dtype = torch.float32, device='cuda:0'
 
@@ -20,7 +20,7 @@ def code_generator(n, d, k, seed, c_type='sur'):
     print(path)
     if exists(path):
         print('code exists')
-        info = read_code(d, k, seed, c_type=c_type)
+        info = read_code(d, k, n, seed, c_type=c_type)
         A = Loading_code(info)
         m = A.m
         print(m, A.n)
@@ -35,6 +35,9 @@ def code_generator(n, d, k, seed, c_type='sur'):
         elif c_type=='3d':
             S = Sur_3D(d)
             print(S.g_stabilizer.size())
+        elif c_type=='rep':
+            S = Repetition_code(d)
+            print(S.g_stabilizer.size())
         
 
         m = S.n-k
@@ -43,6 +46,8 @@ def code_generator(n, d, k, seed, c_type='sur'):
             A = S
             A.logical_opt = A.logical_opt[[1, 2]]
         elif k==1 and c_type=='rsur':
+            A = S
+        elif c_type=='rep':
             A = S
 
         else:
@@ -63,6 +68,7 @@ def code_generator(n, d, k, seed, c_type='sur'):
     
     print('Commute--stabilizer with logical :', (mod2.commute(A.g_stabilizer, A.logical_opt).sum() == 0).item())
     print('Commute--pure error with logical :', (mod2.commute(A.pure_es, A.logical_opt).sum() == 0).item())
+    # print(mod2.commute(A.g_stabilizer, A.pure_es))
     print('Anticommute--pure error with stabilizer :',((mod2.commute(A.g_stabilizer, A.pure_es) - torch.eye(m)).sum()==0).item())
     print('Commute--pure error with pure error :', (mod2.commute(A.pure_es, A.pure_es).sum() == 0).item())
     print('Anti-Commute--logicals : ')
@@ -107,7 +113,7 @@ def ldpc_generator(n, k, d, seed, g):
 
 c_type=args.c_type
 n, k, d, seed= args.n, args.k, args.d, args.seed
-
+print(n, k, d, seed)
 if c_type == 'qcc':
     l, m, polynomial_a, polynomial_b = 3, 3, [0, 2, 1], [1, 0, 2]
     qcc_generator(l, m, polynomial_a, polynomial_b)
@@ -116,7 +122,7 @@ elif c_type == 'ldpc':
     ldpc_generator(n, k, d, seed, g)
 else:
     d, k, seed = args.d, args.k, args.seed
-    code_generator(d, k, seed, c_type=c_type)
+    code_generator(n, d, k, seed, c_type=c_type)
 
 # sur = Surfacecode(3)
 # print(mod2.Schmidt(sur.logical_opt))

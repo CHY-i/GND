@@ -91,6 +91,7 @@ def read_code(d, k, n, seed=0, c_type='sur'):
     # elif c_type == 'ldpc':
     #     return torch.load(abspath(dirname(__file__)).strip('module')+'code/'+c_type+'_n{}_d{}_k{}_seed{}'.format(n, d, k, seed))
     # else:
+    # print(n, d, k)
     return torch.load(abspath(dirname(__file__)).strip('module')+'code/'+c_type+'_n{}_d{}_k{}_seed{}'.format(n, d, k, seed))#, weights_only=True)
 
 def read_data(d, k, seed, c_type='sur'):
@@ -190,7 +191,9 @@ class Errormodel():
             self.single_p = np.array([1-e_rate, e_rate/3, e_rate/3, e_rate/3])
         elif e_model == 'x':
             self.single_p = np.array([1-e_rate, e_rate-2e-9, 1e-9, 1e-9])
-        if e_model == 'dep2':
+        elif e_model == 'z':
+            self.single_p = np.array([1-e_rate, 1e-9, e_rate-2e-9, 1e-9])
+        elif e_model == 'dep2':
             self.single_p = [1-e_rate]
             self.single_p.extend([e_rate/15]*15)
             

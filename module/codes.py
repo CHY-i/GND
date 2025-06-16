@@ -9,6 +9,9 @@ from module.utils import generate_graph, PCM, PCM_to_Stabilizer, error_solver, H
 from module.mod2 import mod2
 mod2 = mod2()
 
+
+
+
 class Loading_code():
     def __init__(self, info):
         self.g_stabilizer, self.logical_opt, self.pure_es = info[0], info[1], info[2]
@@ -102,6 +105,32 @@ class Abstractcode():
             errors[i] = mod2.opts_prod(torch.vstack([errors[i], sta]))
         return errors    
 
+
+class Repetition_code():
+    def __init__(self, d):
+        self.d = d 
+        self.m = d-1
+        self.n = d
+
+        self.g_stabilizer = self.get_generators_of_stabilizers()
+        self.logical_opt = torch.vstack([torch.ones(self.d), 2*torch.ones(self.d)])
+        self.pure_es = self.pure_errors()
+        self.PCM = PCM(self.g_stabilizer)
+
+    def get_generators_of_stabilizers(self):
+        s =torch.zeros(self.m, self.d)
+        for i in range(self.m):
+            s[i][i:i+2] = 1
+        return s
+    
+    def pure_errors(self):
+        pe = torch.zeros(self.m, self.d)
+        for i in range(self.m):
+            if i%2==0:
+                pe[i][i+1:] = 2
+            else:
+                pe[i][:i+1] = 2
+        return pe
 
 class Surfacecode():
     def __init__(self, d):
@@ -395,6 +424,10 @@ if __name__ == '__main__':
     from module.utils import PCM, Errormodel, Hx_Hz, exact_config
     from copy import deepcopy
     import numpy as np
+    C = Repetition_code(5)
+    print(C.g_stabilizer)
+    print(C.logical_opt)
+    print(C.pure_es)
     # S = Toric(3)
     # a = S.PCM
     # print(a.size(0)) 

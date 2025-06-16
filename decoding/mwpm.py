@@ -8,7 +8,7 @@ from os.path import abspath, dirname
 sys.path.append(abspath(dirname(__file__)).strip('decoding'))
 from module import Loading_code, read_code, Hx_Hz, Errormodel, mod2, Abstractcode
 
-d, k, seed, c_type = args.d, args.k, args.seed, args.c_type
+n, d, k, seed, c_type = args.n, args.d, args.k, args.seed, args.c_type
 trials = args.trials
 device, dtype = 'cpu', torch.float32
 e_model = args.e_model
@@ -21,7 +21,7 @@ if c_type == 'drsur':
     g = oCode.g_stabilizer[defect_g,:]
     code = Abstractcode(g_stabilizer=g)
 else:    
-    info = read_code(d=d, k=k, seed=seed, c_type=c_type)
+    info = read_code(n=n, d=d, k=k, seed=seed, c_type=c_type)
     code = Loading_code(info)
 n = code.n
 PCM = code.PCM.cpu().numpy()
