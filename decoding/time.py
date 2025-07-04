@@ -44,7 +44,7 @@ error_rate=0.189
 
 
 '''Loading Code'''
-info = read_code(d, k, seed, c_type=c_type, n=n)
+info = read_code(d, k, n=n, seed=seed, c_type=c_type)
 Code = Loading_code(info)
 
 '''Loading Net'''

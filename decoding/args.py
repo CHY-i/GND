@@ -41,7 +41,7 @@ par_common.add_argument('-d_ff', type=int, default=256,
 par_common.add_argument('-n_layers', type=int, default=1,
         help='number of layers, default: %(default)d')
 '''para for training'''
-par_common.add_argument('-n_type', type=str, default='trade', choices=['made', 'trade', 'nade'],
+par_common.add_argument('-n_type', type=str, default='made', choices=['made', 'trade', 'nade'],
         help='net type of training , default: %(default)s')
 
 par_common.add_argument('-dtype', type=str, default='float32',
