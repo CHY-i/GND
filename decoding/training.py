@@ -60,9 +60,9 @@ if __name__ == '__main__':
     
 
 
-    er = args.er
+    er = args.er # training error rate
     E = Errormodel(er, e_model=e_model)
-    errors = E.generate_error(Code.n,  m=trials, seed=seed)
+    errors = E.generate_error(Code.n,  m=trials, seed=seed) # draw samples
 
     syndrome = mod2.commute(errors, Code.g_stabilizer)
     pe = E.pure(Code.pure_es, syndrome, device=device, dtype=dtype)
@@ -92,6 +92,7 @@ if __name__ == '__main__':
     scheduler = StepLR(optimizer, step_size=2000, gamma=0.9)
     # loss_his = []
     # lo_his = []
+    '''training'''
     for l in range(epoch):
         ers = E.generate_error(Code.n, m=batch, seed=False)
 
@@ -117,6 +118,7 @@ if __name__ == '__main__':
         #     KL = torch.mean(logq-logp, dim=0)
             print(loss)
             # loss_his.append(KL)
+        '''decoding test'''
         if (l+1) % 1000 == 0:
             lconf = forward(n_s=trials, m=Code.m, van=van, syndrome=syndrome, device=device, dtype=dtype, k=k, n_type=n_type)
             #print(lconf)

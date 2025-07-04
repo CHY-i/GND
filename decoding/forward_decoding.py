@@ -43,7 +43,7 @@ else:
 print(path)
 
 
-error_rate = torch.logspace(-3, -1, 15)[:3]#[0.001, 0.01, 0.1]#torch.logspace(-2, -0.9, 10)#torch.logspace(-1.5, -0.5, 10)#
+error_rate = torch.logspace(-3, -1, 15)[-2:-1]#[:3]#[0.001, 0.01, 0.1]#torch.logspace(-2, -0.9, 10)#torch.logspace(-1.5, -0.5, 10)#
 print(error_rate)
 #torch.tensor([0.03,0.03366055, 0.03776776, 0.04237613, 0.0475468, 0.05334838,
 #  0.05985787, 0.06716163,0.07535659, 0.08455149, 0.09486833, 0.10644402,
@@ -55,7 +55,7 @@ Code = Loading_code(info)
 
 '''Loading Net'''
 net = torch.load(path)
-print(net)
+# print(net)
 # dtype = net.deep_net[0].weight.dtype
 
 if n_type == 'made':
@@ -81,21 +81,21 @@ for i in range(len(error_rate)):
         E = Errormodel(error_rate[i], e_model=e_model)#error_rate[i]
         errors = E.generate_error(Code.n,  m=trials, seed=error_seed)
 
-
+        '''getting syndrome'''
         syndrome = mod2.commute(errors, Code.g_stabilizer)
         # print(errors[errors.nonzero()[0, 0]])
-        pe = E.pure(Code.pure_es, syndrome, device=device, dtype=dtype)
+        pe = E.pure(Code.pure_es, syndrome, device=device, dtype=dtype) #getting pure error from the syndrome
 
         '''forward to get configs'''
         t0 = time.time()
-        lconf = forward(n_s=trials, m=Code.m, van=van, syndrome=syndrome, device=device,dtype=dtype, k=k, n_type=n_type)
-        # print(torch.count_nonzero(lconf))
+        lconf = forward(n_s=trials, m=Code.m, van=van, syndrome=syndrome, device=device,dtype=dtype, k=k, n_type=n_type) 
+
 
         '''correction'''
-        l = mod2.confs_to_opt(confs=lconf, gs=Code.logical_opt)
-        recover = mod2.opt_prod(pe, l)
-        check = mod2.opt_prod(recover, errors)
-        commute = mod2.commute(check, Code.logical_opt)
+        l = mod2.confs_to_opt(confs=lconf, gs=Code.logical_opt) # obtain logical operator
+        recover = mod2.opt_prod(pe, l) # obtain recover operator
+        check = mod2.opt_prod(recover, errors) # obtain check operator
+        commute = mod2.commute(check, Code.logical_opt) # check the commutation relation
         # print( torch.count_nonzero(commute))
         if trials == 1:
             fail = torch.count_nonzero(commute.sum(0))
