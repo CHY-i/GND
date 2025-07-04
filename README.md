@@ -36,6 +36,6 @@ python forward_decoding.py -save True -c_type 'sur' -n 13 -d 3 -k 1 -seed 0  -de
 
 ## Decoding time
 
-'''python
+```python
 python time.py -n_type 'made' -c_type 'rsur' -n 121 -d 11 -trials 100 -device 'cuda:0' -er 0.189
-'''
+```
