@@ -70,7 +70,7 @@ def Multi_MLD(d, trials, code, error_rate, device, dtype, seed, t=0):
         cos = []
         elist = []
         for i in range(2**len(L)):
-            print(i)
+            # print(i)
             l = lopt[[i]*pe.size(0)]
             e = mod2.opt_prod(pe, l)
             elist.append(e.unsqueeze(dim=0))
@@ -116,11 +116,11 @@ def Multi_MLD(d, trials, code, error_rate, device, dtype, seed, t=0):
 if __name__ =='__main__':
     import time
     multi = True#False#
-    device, dtype = 'cuda:1', torch.float32
-    trials = 10000
-    c_type='qcc'
-    d, k, seed = 4, 4, 0
-    n = 18
+    device, dtype = 'cuda:1', torch.float64
+    trials = 10
+    c_type='ldpc'
+    d, k, seed = 4, 6, 0
+    n = 30
 
     t_p = 10
     error_seed = 195284
@@ -139,7 +139,7 @@ if __name__ =='__main__':
 
     #error_rate = torch.linspace(0, 0.3, 30)
     # error_rate = torch.logspace(-1.5, -0.5, 10)#[0.189]#
-    error_rate = torch.logspace(-2, -1, 10)
+    error_rate = [0.01]# torch.logspace(-2, -1, 10)
     #torch.logspace(-3.5, -1, 15)
 
     t=torch.zeros(len(error_rate))
